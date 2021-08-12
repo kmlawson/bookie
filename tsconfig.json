@@ -1,0 +1,10 @@
+{
+    "extends": "@tsconfig/recommended/tsconfig.json",
+    "compilerOptions": {
+        "sourceMap": true,
+        "outDir": "./dist",                      /* Redirect output structure to the directory. */
+        "strictNullChecks": true,                 /* Enable strict null checks. */
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist"]
+}
