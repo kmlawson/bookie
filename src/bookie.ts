@@ -19,6 +19,7 @@ namespace bookie {
     sources = await request<Source[]>(filepath);
 
     elem.innerHTML = '';
+    elem.className = 'dsf';
     tagElement = document.createElement('div');
     tagElement.className = 'bookie__tags';
     elem.appendChild(tagElement);
