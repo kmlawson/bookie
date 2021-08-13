@@ -20,12 +20,14 @@ var bookie;
             if (elem === null) {
                 return;
             }
+            sources = yield request(filepath);
             elem.innerHTML = '';
             tagElement = document.createElement('div');
+            tagElement.className = 'bookie__tags';
             elem.appendChild(tagElement);
             resultsElement = document.createElement('div');
+            resultsElement.className = 'bookie__result';
             elem.appendChild(resultsElement);
-            sources = yield request(filepath);
             let tagSet = new Set();
             sources.forEach((source) => {
                 if (source.tags != null) {

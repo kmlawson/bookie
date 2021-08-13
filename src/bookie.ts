@@ -16,13 +16,15 @@ namespace bookie {
     if (elem === null) {
       return;
     }
+    sources = await request<Source[]>(filepath);
+
     elem.innerHTML = '';
     tagElement = document.createElement('div');
+    tagElement.className = 'bookie__tags';
     elem.appendChild(tagElement);
     resultsElement = document.createElement('div');
+    resultsElement.className = 'bookie__result';
     elem.appendChild(resultsElement);
-
-    sources = await request<Source[]>(filepath);
 
     let tagSet = new Set<string>();
     sources.forEach((source) => {
