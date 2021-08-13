@@ -1,10 +1,24 @@
+import camelcaseKeys from 'camelcase-keys';
+
 interface Source {
-  tags: string[];
   title: string;
+  author: {
+    family: string;
+    given: string;
+    droppingParticle: string;
+  }[];
+  issued: {
+    dateParts: (string | number)[];
+  };
+  URL: string;
+  tags: {
+    tag: string;
+    type: string | null;
+  }[];
 }
 
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */  //  Class is only used externally
-class Bookie {
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ //  Class is only used externally
+export class Bookie {
   sources: Source[] | null = null;
   tagElement: HTMLElement | null = null;
   resultsElement: HTMLElement | null = null;
@@ -28,7 +42,14 @@ class Bookie {
     const tagSet = new Set<string>();
     this.sources.forEach((source) => {
       if (source.tags != null) {
-        source.tags.forEach((tag) => tagSet.add(tag));
+        console.log(source.tags);
+
+        source.tags.forEach((tag) => {
+          if (tag.type === undefined) {
+            tagSet.add(tag.tag);
+          }
+          console.log(tagSet);
+        });
       }
     });
 
@@ -55,12 +76,35 @@ class Bookie {
     this.resultsElement.appendChild(list);
 
     const taggedSources = this.sources.filter(
-      (source) => source.tags?.indexOf(tag) != -1,
+      (source) =>
+        source.tags?.find((t) => t.type === undefined && t.tag === tag) !==
+        undefined,
     );
 
     taggedSources.forEach((source) => {
       const item = document.createElement('li');
-      item.textContent = source.title;
+      console.log(source.author);
+      if (source.author) {
+        const authorData = source.author.find((a) => a.family);
+        console.log(authorData);
+        if (authorData) {
+          const author = document.createElement('span');
+          author.textContent =
+            authorData.droppingParticle +
+            ' ' +
+            authorData.family +
+            (authorData.given ? ', ' + authorData.given : '') +
+            '. ';
+          item.appendChild(author);
+        }
+      }
+
+      const title = document.createElement('span');
+      const titleLink = document.createElement('a') as HTMLAnchorElement;
+      titleLink.href = source.URL;
+      titleLink.innerText = source.title;
+      title.appendChild(titleLink);
+      item.appendChild(title);
       item.className = 'bookie__result__item';
 
       list.appendChild(item);
@@ -75,6 +119,7 @@ class Bookie {
   ): Promise<TResponse> {
     return fetch(url, config)
       .then((response) => response.json())
+      .then((json) => camelcaseKeys(json))
       .then((data) => data as TResponse);
   }
 }

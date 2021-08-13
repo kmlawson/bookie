@@ -25,7 +25,7 @@ Example:
 <script src="/js/bookie.js"  type="text/javascript"></script>
 ```
 
-Make an HTML element with an id attribute. 
+Make an HTML element with an `id` attribute. The id can be whatever you want, just use the same in the next section. Here, we're using `bookie` as our id. 
 
 ```html
 <div id="bookie" class="loader">Loading data...</div>
@@ -33,9 +33,9 @@ Make an HTML element with an id attribute.
 
 Any CSS classes on the element can be added to your liking to style the element while the data is loading. All classes and content in the element will be removed when the data is loaded. The `loader` class is just an example. See the demo file for how it's used.
 
-Instantiate the Bookie class and initialize it with `bookie.init(<id for the element you want to use>, <url/path to the json file with sources>)`.
+Instantiate the Bookie class and initialize it with `bookie.init(<id for the element you want to use>, <url/path to the json file with sources>)`. 
 
-Example:
+In this example we're using `bookie` as the first parameter, since we used that for the `id` attribute further up:
 
 ```html
 <script  type="text/javascript">
@@ -71,7 +71,7 @@ The resulting HTML is structured like this:
 </div>
 ```
 
-See [`/demo/index.html`](demo/index.html) for sample styling
+See [`/demo/index.html`](demo/index.html) for sample styling.
 
 ## Development and testing
 
