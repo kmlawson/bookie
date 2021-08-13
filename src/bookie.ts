@@ -1,5 +1,5 @@
 import camelcaseKeys from 'camelcase-keys';
-
+import { SourceCode } from 'eslint';
 interface Source {
   title: string;
   author: {
@@ -8,7 +8,7 @@ interface Source {
     droppingParticle: string;
   }[];
   issued: {
-    dateParts: (string | number)[];
+    dateParts: (string | number)[][];
   };
   URL: string;
   tags: {
@@ -42,13 +42,10 @@ export class Bookie {
     const tagSet = new Set<string>();
     this.sources.forEach((source) => {
       if (source.tags != null) {
-        console.log(source.tags);
-
         source.tags.forEach((tag) => {
           if (tag.type === undefined) {
             tagSet.add(tag.tag);
           }
-          console.log(tagSet);
         });
       }
     });
@@ -83,15 +80,15 @@ export class Bookie {
 
     taggedSources.forEach((source) => {
       const item = document.createElement('li');
-      console.log(source.author);
+      console.log(source);
       if (source.author) {
         const authorData = source.author.find((a) => a.family);
-        console.log(authorData);
         if (authorData) {
           const author = document.createElement('span');
           author.textContent =
-            authorData.droppingParticle +
-            ' ' +
+            (authorData.droppingParticle
+              ? authorData.droppingParticle + ' '
+              : '') +
             authorData.family +
             (authorData.given ? ', ' + authorData.given : '') +
             '. ';
@@ -107,6 +104,12 @@ export class Bookie {
       item.appendChild(title);
       item.className = 'bookie__result__item';
 
+      if (source.issued?.dateParts) {
+        const issued = document.createElement('span');
+        issued.textContent = ' (' + source.issued.dateParts[0][0] + ')';
+        item.appendChild(issued);
+      }
+
       list.appendChild(item);
     });
   }
@@ -119,7 +122,7 @@ export class Bookie {
   ): Promise<TResponse> {
     return fetch(url, config)
       .then((response) => response.json())
-      .then((json) => camelcaseKeys(json))
+      .then((json) => camelcaseKeys(json, { deep: true }))
       .then((data) => data as TResponse);
   }
 }
