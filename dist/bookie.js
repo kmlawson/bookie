@@ -8,59 +8,65 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var bookie;
-(function (bookie) {
-    var sources;
-    var tagElement;
-    var resultsElement;
-    function init(elementId, filepath) {
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ //  Class is only used externally
+class Bookie {
+    constructor() {
+        this.sources = null;
+        this.tagElement = null;
+        this.resultsElement = null;
+    }
+    init(elementId, filepath) {
         return __awaiter(this, void 0, void 0, function* () {
             const elem = document.getElementById(elementId);
-            let test;
             if (elem === null) {
                 return;
             }
-            sources = yield request(filepath);
+            this.sources = yield this.request(filepath);
             elem.innerHTML = '';
             elem.className = 'dsf';
-            tagElement = document.createElement('div');
-            tagElement.className = 'bookie__tags';
-            elem.appendChild(tagElement);
-            resultsElement = document.createElement('div');
-            resultsElement.className = 'bookie__result';
-            elem.appendChild(resultsElement);
-            let tagSet = new Set();
-            sources.forEach((source) => {
+            this.tagElement = document.createElement('div');
+            this.tagElement.className = 'bookie__tags';
+            elem.appendChild(this.tagElement);
+            this.resultsElement = document.createElement('div');
+            this.resultsElement.className = 'bookie__result';
+            elem.appendChild(this.resultsElement);
+            const tagSet = new Set();
+            this.sources.forEach((source) => {
                 if (source.tags != null) {
                     source.tags.forEach((tag) => tagSet.add(tag));
                 }
             });
             tagSet.forEach((tag) => {
-                let button = document.createElement('button');
+                if (this.tagElement === null)
+                    return;
+                const button = document.createElement('button');
                 button.textContent = tag;
                 button.className = 'bookie__tag';
-                button.onclick = (ev) => {
-                    show(tag);
+                button.onclick = () => {
+                    this.show(tag);
                 };
-                tagElement.appendChild(button);
+                this.tagElement.appendChild(button);
             });
         });
     }
-    bookie.init = init;
-    function show(tag) {
-        resultsElement.innerHTML = '';
+    show(tag) {
+        if (this.resultsElement === null)
+            return;
+        if (this.sources === null)
+            return;
+        this.resultsElement.innerHTML = '';
         const list = document.createElement('ul');
         list.className = 'bookie__result__list';
-        resultsElement.appendChild(list);
-        const taggedSources = sources.filter((source) => { var _a; return ((_a = source.tags) === null || _a === void 0 ? void 0 : _a.indexOf(tag)) != -1; });
+        this.resultsElement.appendChild(list);
+        const taggedSources = this.sources.filter((source) => { var _a; return ((_a = source.tags) === null || _a === void 0 ? void 0 : _a.indexOf(tag)) != -1; });
         taggedSources.forEach((source) => {
-            let item = document.createElement('li');
+            const item = document.createElement('li');
             item.textContent = source.title;
             item.className = 'bookie__result__item';
             list.appendChild(item);
         });
     }
-    function request(url, 
+    request(url, 
     // `RequestInit` is a type for configuring
     // a `fetch` request. By default, an empty object.
     config = {}) {
@@ -70,5 +76,5 @@ var bookie;
                 .then((data) => data);
         });
     }
-})(bookie || (bookie = {}));
+}
 //# sourceMappingURL=bookie.js.map
