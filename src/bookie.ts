@@ -65,14 +65,28 @@ export class Bookie {
   tagElement: HTMLElement | null = null;
   resultsElement: HTMLElement | null = null;
 
-  init(elementId: string, filepath: string): void {
+  init(elementId: string, filepath: string, sortby: string): void {
     const elem = document.getElementById(elementId);
     if (elem === null) {
       return;
     }
     this.request<Source[]>(filepath).then((sources: Source[]) => {
       if (!sources) return;
+      if (sortby === "year") {
       this.sources = sources
+        .map((s) => new Book(s))
+        .sort((a, b) =>
+          a.issued
+            .toUpperCase()
+            .localeCompare(b.issued.toUpperCase()) !== 0
+            ? a.issued
+                .toUpperCase()
+                .localeCompare(b.issued.toUpperCase())
+            : a.title.toUpperCase().localeCompare(b.title.toUpperCase()),
+        );
+      } 
+      else if (sortby === "author") {
+        this.sources = sources
         .map((s) => new Book(s))
         .sort((a, b) =>
           a.authors[0]
@@ -83,6 +97,15 @@ export class Bookie {
                 .localeCompare(b.authors[0].toUpperCase())
             : a.title.toUpperCase().localeCompare(b.title.toUpperCase()),
         );
+      }
+      else
+      {
+        this.sources = sources
+        .map((s) => new Book(s))
+        .sort((a, b) =>
+          a.title.toUpperCase().localeCompare(b.title.toUpperCase()),
+        );
+      }
       const firstBookWithAuthor = this.sources.find((b) => b.authors[0] !== '');
       if (firstBookWithAuthor !== undefined) {
         const indexOfFirstBookWithAuthors =
@@ -113,17 +136,19 @@ export class Bookie {
           });
         }
       });
-
+      
       tagSet.forEach((tag) => {
         if (this.tagElement === null) return;
         const button = document.createElement('button');
         button.textContent = tag;
         button.className = 'bookie__tag';
+        button.id = tag
         button.onclick = () => {
           this.show(tag);
         };
         this.tagElement.appendChild(button);
       });
+      
     });
   }
 
@@ -167,6 +192,7 @@ export class Bookie {
 
   private appendIssued(source: Book, item: HTMLLIElement) {
     const issued = document.createElement('span');
+    issued.className = 'bookie__result__item__year';
     issued.textContent = ' ' + source.issued;
     item.appendChild(issued);
   }
@@ -189,7 +215,7 @@ export class Bookie {
     const author = document.createElement('span');
     author.className = 'bookie__result__item__authors';
     author.innerHTML = source.authors
-      .map((a) => '<div>' + a + '</div>')
+      .map((a) => '<span>' + a + '</span>')
       .join('');
     item.appendChild(author);
   }
