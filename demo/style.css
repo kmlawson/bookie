@@ -1,14 +1,17 @@
 .bookie__tags {
-    display: flex;
+    display: flex
+    /* display: none; */
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
 }
 
 .bookie__tag {
-    background-color: cornflowerblue;
+    display: none:
+    /* background-color: cornflowerblue; */
+    background-color: green;
     padding: 4px 8px;
-    margin: 4px 4px;
+    margin: 4px 4px 20px 10px;
     border-width: 0;
     border-radius: 4px;
 }
@@ -23,47 +26,65 @@
 }
 
 .bookie__result__item {
-    margin: 15px 0;
-    padding: 0;
-    border: solid 1px #ccc;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px 0 #ccc;
+    /* margin: 1px 0; */
+    /* padding-top: 2px;
+    padding-bottom: 2px; */
+    margin-left: 15px;
+    list-style-type: disc;
+    /* border: solid 1px #ccc; */
+    /* padding: 1px; */
+    /* border-radius: 5px;
+    box-shadow: 2px 2px 5px 0 #ccc; */
 }
 
 .bookie__result__item__authors {
-    color: #333;
-    font-size: 0.9em;
+    /* color: #666; */
+    font-size: 0.9em; 
 }
 .bookie__result__item__authors {
-    display: block;
+    /* display: block; */
+    margin-right: 7px;
 }
 .bookie__result__item__authors > div {
-    display: inline-block;
+    /* display: inline-block; */
 }
-.bookie__result__item__authors > div:not(:first-child)::before
+.bookie__result__item__authors > span:not(:first-child)::before
 {
     content: '; ';
 }
 
+.bookie__result__item__year {
+    font-size: 0.9em;
+}
+
+.bookie__result__item__title {
+    font-size: 0.9em; 
+}
 .bookie__result__item__title a {
     text-decoration: none ;
     color: inherit;
 }
 
 
+.bookie__result__item__title a {
+    color: #003a87;
+}
 .bookie__result__item__title a:hover {
     text-decoration: underline ;
 }
 
+.bookie__result__item__tags {
+    display: none;
+}
+
 .bookie__result__item__tags span {
-    margin: 2px;
+    /* margin: 2px;
     font-size: 0.8em;
     color: #333;
     background-color: #ccc;
     padding: 2px 4px;
     border-radius: 4px;
-    display: inline-block;
+    display: inline-block; */
 }
 
 /* CSS to show a loading animation while we wait for the data to be downloaded 
